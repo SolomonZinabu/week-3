@@ -260,3 +260,65 @@ Missing Values: Certain fields, like Citizenship and PostalCode, have missing va
 Outliers: Significant outliers were detected in TotalPremium and TotalClaims.
 Correlations: There is a positive correlation between TotalPremium and TotalClaims, indicating that higher premiums are associated with more claims.
 Data Distribution: The distribution of TotalPremium is heavily skewed, suggesting the need for transformation or handling in future tasks.
+
+
+Task 2: Data Version Control (DVC) Setup
+Objective
+The objective of Task 2 is to set up Data Version Control (DVC) for tracking data versions, enabling reproducibility of analysis, and ensuring proper management of data and model files.
+
+Steps in Task 2
+DVC Installation:
+
+Installed DVC using the following command:
+
+pip install dvc
+
+Initializing DVC in the Project:
+
+Initialized DVC in the project directory to set up version control for data files:
+
+
+
+dvc init
+Tracking Data with DVC:
+
+Added the data files to be tracked by DVC:
+
+
+
+dvc add data/MachineLearningRating_v3.txt
+This step creates .dvc files that record metadata about the tracked data files.
+
+Storing Data Remotely:
+
+Configured a remote storage location (e.g., S3, GDrive, or a local folder) to store large datasets:
+
+
+
+dvc remote add -d myremote /path/to/remote/storage
+dvc push
+This allows the team to store the dataset remotely and access it by pulling the latest version when needed.
+
+Data Versioning:
+
+Once the data is versioned, any changes or updates to the dataset are tracked by DVC. To check the status and re-run pipelines after modifying data:
+
+
+
+dvc status
+dvc repro
+
+
+Pushing DVC Changes:
+
+After adding new data or modifying existing data, push the changes to the remote storage:
+
+dvc push
+
+Collaborating with DVC:
+
+Team members can pull the latest version of the dataset for analysis:
+
+
+
+dvc pull
