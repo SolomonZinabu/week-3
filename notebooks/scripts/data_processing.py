@@ -1,38 +1,30 @@
 import pandas as pd
 
 def load_data(file_path):
-    """
-    Load data from a file path into a pandas DataFrame.
-    
-    :param file_path: str, path to the data file
-    :return: pd.DataFrame
-    """
+    """Function to load data from a CSV file."""
     try:
-        data = pd.read_csv(file_path)
-        return data
+        df = pd.read_csv(file_path, delimiter='|')  # Ensure delimiter matches the data format
+        return df
     except Exception as e:
         print(f"Error loading data: {e}")
         return None
 
-def clean_data(data):
-    """
-    Clean the dataset by handling missing values, duplicates, and other preprocessing steps.
-    
-    :param data: pd.DataFrame
-    :return: pd.DataFrame, cleaned data
-    """
-    # Example cleaning process
-    data.dropna(inplace=True)  # Removing missing values
-    data.drop_duplicates(inplace=True)  # Removing duplicates
-    return data
 
-def prepare_features(data):
-    """
-    Prepare features for analysis and modeling. This can include encoding categorical variables, scaling, etc.
-    
-    :param data: pd.DataFrame
-    :return: pd.DataFrame, processed data with prepared features
-    """
-    # Example of encoding a categorical feature
-    data = pd.get_dummies(data, drop_first=True)
-    return data
+def summarize_data(df):
+    """Function to summarize the dataframe."""
+    return df.describe(include='all')
+
+def check_missing_values(df):
+    """Function to check for missing values."""
+    return df.isnull().sum()
+
+def check_data_types(df):
+    """Function to check data types of each column."""
+    return df.dtypes
+
+def detect_outliers(df, column):
+    """Function to detect outliers using the IQR method."""
+    Q1 = df[column].quantile(0.25)
+    Q3 = df[column].quantile(0.75)
+    IQR = Q3 - Q1
+    return df[((df[column] < (Q1 - 1.5 * IQR)) | (df[column] > (Q3 + 1.5 * IQR)))]
