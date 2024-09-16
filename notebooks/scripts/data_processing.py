@@ -9,7 +9,33 @@ def load_data(file_path):
         print(f"Error loading data: {e}")
         return None
 
-
+def clean_data(df):
+    """
+    Clean the data by removing rows with missing or zero values in critical columns
+    such as TotalPremium and TotalClaims.
+    """
+    # Remove rows with missing or zero values for key metrics
+    df_clean = df.dropna(subset=['TotalPremium', 'TotalClaims'])
+    df_clean = df_clean[df_clean['TotalPremium'] != 0]
+    df_clean = df_clean[df_clean['TotalClaims'] != 0]
+    
+    return df_clean
+def load_data2(file_path):
+    """Function to load data from a CSV file."""
+    try:
+        # Load the data with appropriate data types
+        df = pd.read_csv(file_path, delimiter='|', low_memory=False,
+                         dtype={'TotalClaims': 'float64', 'TotalPremium': 'float64'},
+                         na_values=['', ' ', 'NaN'])  # Handle missing values
+        
+        # Handle non-numeric or mixed-type columns by forcing them to numeric
+        df['TotalClaims'] = pd.to_numeric(df['TotalClaims'], errors='coerce')
+        df['TotalPremium'] = pd.to_numeric(df['TotalPremium'], errors='coerce')
+        
+        return df
+    except Exception as e:
+        print(f"Error loading data: {e}")
+        return None
 def summarize_data(df):
     """Function to summarize the dataframe."""
     return df.describe(include='all')
